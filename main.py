@@ -25,7 +25,7 @@ conn = snowflake.connector.connect(
 #default route
 @app.route('/')
 def default_route():
-    return "<p>welcome to the page </p>"
+    return "<p>welcome to the page and</p>"
 
 # route to execute a query
 @app.route('/select', methods=['GET'])
