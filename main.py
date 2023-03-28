@@ -1,4 +1,3 @@
-
 from flask import Flask, jsonify, request
 import snowflake.connector
 
@@ -22,8 +21,14 @@ conn = snowflake.connector.connect(
     schema=schema_name
 )
 
+#default route
+@app.route('/')
+def default_route():
+    return "<p>welcome to the page </p>"
+
+
 # route to execute a query
-@app.route('/select', methods=['GET'])
+@app.route('/select')
 def query():
     cursor = conn.cursor()
     cursor.execute('SELECT * FROM table2')
@@ -31,7 +36,31 @@ def query():
     cursor.close()
     return jsonify(result)
 
+# route to insert data in a table
+@app.route('/insert', methods=['POST'])
+def insert():
+    data = request.json
+    cursor = conn.cursor()
+    cursor.execute(
+        "INSERT INTO table2 (col1, col2) VALUES (%s, %s)",
+        (data['col1'], data['col2'])
+    )
+    cursor.close()
+    conn.commit()
+    return 'Data inserted successfully', 201
+
+# route to update data in a table
+@app.route('/update', methods=['PUT'])
+def update():
+    data = request.json
+    cursor = conn.cursor()
+    cursor.execute(
+        "UPDATE table2 SET col1=%s WHERE col2=%s",
+        (data['col1'], data['col2'])
+    )
+    cursor.close()
+    conn.commit()
+    return 'Data updated successfully', 200
 
 if __name__ == '__main__':
-    # Threaded option to enable multiple instances for multiple user access support
-    app.run(threaded=True, port=5000)
+    app.run()
