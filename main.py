@@ -22,11 +22,6 @@ conn = snowflake.connector.connect(
     schema=schema_name
 )
 
-#default route
-@app.route('/')
-def default_route():
-    return "<p>welcome to the page and</p>"
-
 # route to execute a query
 @app.route('/select', methods=['GET'])
 def query():
@@ -35,8 +30,6 @@ def query():
     result = cursor.fetchall()
     cursor.close()
     return jsonify(result)
-
-
 
 
 if __name__ == '__main__':
