@@ -13,7 +13,14 @@ database_name = 'MYTESTDB'
 schema_name = 'MYSCHEMA'
 
 # Connect to Snowflake
-
+conn = snowflake.connector.connect(
+    account=account_name,
+    user=username,
+    password=password,
+    warehouse=warehouse_name,
+    database=database_name,
+    schema=schema_name
+)
 
 #default route
 @app.route('/')
