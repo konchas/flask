@@ -27,7 +27,14 @@ conn = snowflake.connector.connect(
 def default_route():
     return "<p>welcome to the page </p>"
 
-
+# route to execute a query
+@app.route('/select')
+def query():
+    cursor = conn.cursor()
+    cursor.execute('SELECT * FROM table2')
+    result = cursor.fetchall()
+    cursor.close()
+    return jsonify(result)
 
 
 
